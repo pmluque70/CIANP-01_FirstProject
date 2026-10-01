@@ -101,10 +101,9 @@ function calcularMejorRacha(sesiones) {
 
     for (let i = 1; i < fechasUnicas.length; i++) {
         const fechaAnterior = stringAFecha(fechasUnicas[i - 1]);
-        const fechaActual = stringAFecha(fechasUnicas[i]);
-        const diferencia = (fechaActual - fechaAnterior) / (1000 * 60 * 60 * 24);
+        const fechaEsperada = fechaComoString(sumarDias(fechaAnterior, 1));
 
-        if (diferencia === 1) {
+        if (fechasUnicas[i] === fechaEsperada) {
             rachaActual++;
         } else {
             mejor = Math.max(mejor, rachaActual);
@@ -131,9 +130,10 @@ function calcularMinutosSemana(sesiones) {
     const lunes = sumarDias(hoy, -diasDesdeLunes);
     const lunesStr = fechaComoString(lunes);
 
-    // Sumar minutos de sesiones desde el lunes
+    // Sumar minutos de sesiones desde el lunes hasta hoy
+    const hoyStr = hoyComoString();
     return sesiones
-        .filter(s => s.fecha >= lunesStr)
+        .filter(s => s.fecha >= lunesStr && s.fecha <= hoyStr)
         .reduce((total, s) => total + s.minutos, 0);
 }
 
@@ -145,10 +145,11 @@ function calcularDiasMes(sesiones) {
     const ahora = new Date();
     const mesActual = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}`;
 
-    // Filtrar sesiones del mes actual y contar dias unicos
+    // Filtrar sesiones del mes actual (sin futuras) y contar dias unicos
+    const hoyStr = hoyComoString();
     const diasUnicos = new Set(
         sesiones
-            .filter(s => s.fecha.startsWith(mesActual))
+            .filter(s => s.fecha.startsWith(mesActual) && s.fecha <= hoyStr)
             .map(s => s.fecha)
     );
 
