@@ -17,8 +17,8 @@ Web estática para registrar sesiones de estudio y motivarse viendo la racha de 
 - Trabaja siempre con la fecha local del usuario. Nunca uses `toISOString()` ni `new Date("AAAA-MM-DD")`: se interpretan en UTC y desplazan el día.
 - Racha actual = días consecutivos con al menos 1 sesión que terminan hoy. Si hoy no hay sesión pero ayer sí, la racha sigue viva y se cuenta desde ayer.
 - Mejor racha = la secuencia más larga de días consecutivos con sesión en toda la historia. Se calcula recorriendo las fechas únicas ordenadas.
-- Semana = de lunes a domingo. Minutos semanales = suma de minutos de sesiones desde el lunes de la semana actual.
-- Dias del mes = numero de dias unicos con al menos 1 sesion en el mes actual.
+- Minutos semanales = suma de minutos de las sesiones desde el lunes hasta hoy (las futuras no suman).
+- Días del mes = número de días únicos con al menos 1 sesión en el mes actual, sin contar fechas futuras.
 - Varias sesiones el mismo día cuentan como un solo día. Las fechas futuras no suman.
 ## Forma de trabajar
 - Haz solo lo que se pide: no añadas funcionalidades por tu cuenta.
@@ -30,7 +30,7 @@ Web estática para registrar sesiones de estudio y motivarse viendo la racha de 
 - 🚫 Nunca: añadir dependencias, frameworks o un paso de build.
 ## Verificación
 - No hay tests ni lint. Probar abriendo `index.html` en el navegador.
-- Para empezar de cero: DevTools → Application → Local Storage → borrar la clave `diario-estudio-sesiones`.
+- Para empezar de cero: DevTools → Application → Local Storage → borrar la clave `diarioEstudio_sesiones`.
 ## Memoria
 - Al empezar, lee `MEMORY.md` para conocer el estado del proyecto y las decisiones tomadas.
 - Al terminar una tarea, actualízalo: estado actual, decisiones importantes (con su porqué) y errores a evitar.
