@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    line-height: 1.6;
+    padding: 1rem;
+}
+
+.contenedor {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #444;
+}
+
+/* Racha */
+.racha {
+    background: linear-gradient(135deg, #ff6b35, #f7c59f);
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+}
+
+.racha-numero {
+    display: block;
+    font-size: 3.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.racha-texto {
+    font-size: 1.1rem;
+}
+
+.mejor-racha {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Formulario */
+.formulario {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: #ff6b35;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #ff6b35;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e55a2b;
+}
+
+/* Lista de sesiones */
+.sesiones {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+.sesion-fecha {
+    font-weight: 500;
+}
+
+.sesion-detalle {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.sesion-minutos {
+    background: #f0f2f5;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.lista-vacia {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
