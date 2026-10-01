@@ -1,3 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <text y="80" font-size="80">🔥</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="Llama" x1="32" y1="6" x2="32" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#17141a"/>
+  <path d="M32 8c1.6 8.5-2.4 13-6.4 16.7C21.9 28.4 19 32.3 19 38a13 13 0 0 0 26 0c0-4.5-1.9-7.8-4.3-10.9-1.2 2.1-2.8 3.6-4.7 4.3C37.2 25.8 34.5 18.2 32 8Z" fill="url(#Llama)"/>
 </svg>

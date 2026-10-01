@@ -1,14 +1,33 @@
+/* ============================================
+   Diario de Estudio — Estilos
+   Dirección estética: "brasa" cálida.
+   Naranja dominates sobre fondo hueso, con una
+   tarjeta de racha oscura como punto focal.
+   ============================================ */
+
 :root {
-    --color-primario: #3b82f6;
-    --color-primario-hover: #2563eb;
-    --color-fondo: #f0f2f5;
-    --color-tarjeta: #ffffff;
-    --color-texto: #1a1a2e;
-    --color-texto-secundario: #666666;
-    --color-borde: #eeeeee;
-    --sombra: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --radio: 12px;
-    --transicion: all 0.2s ease;
+    /* Naranja */
+    --naranja: #ff6b35;
+    --naranja-hover: #e8551f;
+    --naranja-claro: #fdba74;
+    --ambar: #f59e0b;
+
+    /* Neutros cálidos */
+    --tinta: #17141a;
+    --tinta-2: #241d22;
+    --fondo: #f7f4f1;
+    --fondo-2: #efe9e4;
+    --tarjeta: #ffffff;
+    --borde: #e7ded7;
+    --texto: #2b2226;
+    --texto-suave: #7a6a6f;
+
+    /* Sistema */
+    --sombra: 0 1px 2px rgba(43, 34, 38, 0.04), 0 8px 24px rgba(43, 34, 38, 0.06);
+    --sombra-hover: 0 2px 4px rgba(43, 34, 38, 0.05), 0 16px 40px rgba(43, 34, 38, 0.1);
+    --radio: 16px;
+    --radio-chico: 10px;
+    --transicion: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -18,209 +37,409 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(180deg, #f0f2f5 0%, #e8ecf1 100%);
-    color: var(--color-texto);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 107, 53, 0.12), transparent 70%),
+        linear-gradient(180deg, var(--fondo) 0%, var(--fondo-2) 100%);
+    background-attachment: fixed;
+    color: var(--texto);
     line-height: 1.6;
-    padding: 1rem;
     min-height: 100vh;
+    padding: 1rem 1rem 0;
+}
+
+/* Grano sutil: da textura y evita el "plano digital" */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 .contenedor {
+    position: relative;
+    z-index: 1;
     max-width: 500px;
     margin: 0 auto;
+}
+
+/* -------------------------------------------
+   Entrada escalonada: una solaSequence
+   orquestada al cargar, no sueltas.
+   ------------------------------------------- */
+@keyframes entrar {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 h1 {
     text-align: center;
     margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: clamp(1.5rem, 5vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+.racha { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
+.formulario { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
+.sesiones { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 360ms both; }
+footer { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 480ms both; }
 
 h2 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-    color: #444;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: var(--texto-suave);
 }
 
-/* Racha */
+/* -------------------------------------------
+   Tarjeta de racha — punto focal oscuro
+   ------------------------------------------- */
 .racha {
-    background: linear-gradient(135deg, var(--color-primario), #93c5fd);
-    color: white;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--tinta) 0%, var(--tinta-2) 100%);
+    border-radius: var(--radio);
+    padding: 2rem 1.5rem 1.5rem;
+    margin-bottom: 1.25rem;
     text-align: center;
-    padding: 1.5rem;
-    border-radius: 16px;
-    margin-bottom: 1.5rem;
-    animation: aparecer 0.4s ease-out;
+    color: #fff;
+    box-shadow: 0 20px 50px rgba(23, 20, 26, 0.28);
 }
 
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+/* Resplandor naranja detrás del número */
+.racha::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.32), transparent 62%);
+    pointer-events: none;
+}
+
+.racha > * {
+    position: relative;
+    z-index: 1;
+}
+
+.racha-actual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.llama {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.25rem;
+    filter: drop-shadow(0 0 14px rgba(255, 107, 53, 0.65));
+    animation: latido 3.2s ease-in-out 900ms infinite;
+}
+
+/* Latido suave: llama que respira */
+@keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.09); }
 }
 
 .racha-numero {
-    display: block;
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1;
+    font-size: clamp(4rem, 18vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #fff 30%, var(--naranja-claro));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .racha-texto {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    margin-top: 0.4rem;
 }
 
-.mejor-racha {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    opacity: 0.9;
+/* Estadísticas: rejilla de 3 columnas con separadores */
+.racha-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.minutos-semana {
-    margin-top: 0.25rem;
-    font-size: 0.9rem;
-    opacity: 0.9;
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0 0.5rem;
 }
 
-.dias-mes {
-    margin-top: 0.25rem;
-    font-size: 0.9rem;
-    opacity: 0.9;
+.stat + .stat {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Formulario */
+.stat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.stat-valor {
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--naranja-claro);
+}
+
+/* -------------------------------------------
+   Formulario
+   ------------------------------------------- */
 .formulario {
-    background: var(--color-tarjeta);
-    padding: 1.25rem;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
     border-radius: var(--radio);
-    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
     box-shadow: var(--sombra);
-    transition: var(--transicion);
-}
-
-.formulario:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transition: box-shadow var(--transicion), transform var(--transicion);
 }
 
 label {
     display: block;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    color: var(--texto-suave);
 }
 
 input {
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.7rem 0.85rem;
     margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-chico);
+    background: var(--fondo);
+    color: var(--texto);
     font-size: 1rem;
     font-family: inherit;
-    transition: var(--transicion);
+    transition: border-color var(--transicion), box-shadow var(--transicion), background var(--transicion);
+}
+
+input::placeholder {
+    color: #b5a8ac;
+}
+
+input:hover {
+    border-color: #d9ccc4;
 }
 
 input:focus {
     outline: none;
-    border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    background: var(--tarjeta);
+    border-color: var(--naranja);
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.14);
 }
 
 button {
     width: 100%;
-    padding: 0.75rem;
-    background: var(--color-primario);
-    color: white;
+    padding: 0.85rem;
+    background: var(--naranja);
+    color: #fff;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: var(--radio-chico);
+    font-size: 0.95rem;
+    font-weight: 700;
     font-family: inherit;
+    letter-spacing: 0.01em;
     cursor: pointer;
-    transition: var(--transicion);
+    box-shadow: 0 4px 14px rgba(255, 107, 53, 0.3);
+    transition: background var(--transicion), transform var(--transicion), box-shadow var(--transicion);
 }
 
-button:hover {
-    background: var(--color-primario-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
+/* :active funciona en móvil; :hover solo con ratón */
 button:active {
-    transform: translateY(0);
+    transform: translateY(1px) scale(0.99);
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
-/* Lista de sesiones */
+@media (hover: hover) {
+    button:hover {
+        background: var(--naranja-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba(255, 107, 53, 0.42);
+    }
+
+    .formulario:hover {
+        box-shadow: var(--sombra-hover);
+        transform: translateY(-2px);
+    }
+
+    .sesiones:hover {
+        box-shadow: var(--sombra-hover);
+    }
+}
+
+/* -------------------------------------------
+   Lista de sesiones
+   ------------------------------------------- */
 .sesiones {
-    background: var(--color-tarjeta);
-    padding: 1.25rem;
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
     border-radius: var(--radio);
+    padding: 1.25rem;
     box-shadow: var(--sombra);
+    transition: box-shadow var(--transicion), transform var(--transicion);
 }
 
 ul {
     list-style: none;
 }
 
+/* Cada item entra por separado, en cascada */
+@keyframes itemEntra {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--color-borde);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: var(--transicion);
-    border-radius: 8px;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    gap: 0.75rem;
+    padding: 0.7rem 0.6rem;
+    border-radius: var(--radio-chico);
+    border-bottom: 1px solid var(--borde);
+    animation: itemEntra 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition: background var(--transicion);
 }
 
-li:hover {
-    background: #fafafa;
-}
+li:nth-child(1) { animation-delay: 60ms; }
+li:nth-child(2) { animation-delay: 120ms; }
+li:nth-child(3) { animation-delay: 180ms; }
+li:nth-child(4) { animation-delay: 240ms; }
+li:nth-child(5) { animation-delay: 300ms; }
+li:nth-child(n + 6) { animation-delay: 340ms; }
 
 li:last-child {
     border-bottom: none;
 }
 
+@media (hover: hover) {
+    li:hover {
+        background: var(--fondo);
+    }
+}
+
+.sesion-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
 .sesion-fecha {
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--texto);
 }
 
 .sesion-detalle {
-    font-size: 0.85rem;
-    color: var(--color-texto-secundario);
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sesion-minutos {
-    background: var(--color-fondo);
-    padding: 0.25rem 0.6rem;
+    flex-shrink: 0;
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--naranja-hover);
+    padding: 0.25rem 0.65rem;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
 
 .lista-vacia {
     text-align: center;
-    color: #888;
+    color: var(--texto-suave);
     font-style: italic;
+    padding: 0.5rem 0;
 }
 
-/* Footer */
+/* -------------------------------------------
+   Footer
+   ------------------------------------------- */
 footer {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 1.5rem auto 0;
     text-align: center;
-    padding: 1rem 0;
-    margin-top: 1.5rem;
-    border-top: 1px solid var(--color-borde);
+    padding: 1.25rem 0 2rem;
 }
 
 footer p {
-    font-size: 0.8rem;
-    color: var(--color-texto-secundario);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--texto-suave);
+    font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------
+   Accesibilidad: respeta a quien pide menos
+   movimiento (esta es probablemente la razón
+   por la que no veías las animaciones).
+   ------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* -------------------------------------------
+   Foco visible para navegación con teclado
+   ------------------------------------------- */
+:focus-visible {
+    outline: 2px solid var(--naranja);
+    outline-offset: 2px;
+}
+
+.racha:focus-visible {
+    outline-offset: 4px;
 }

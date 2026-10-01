@@ -198,6 +198,7 @@ function renderizar() {
         const item = document.createElement('li');
 
         const info = document.createElement('div');
+        info.className = 'sesion-info';
         const fechaSpan = document.createElement('span');
         fechaSpan.className = 'sesion-fecha';
         fechaSpan.textContent = formatearFecha(sesion.fecha);

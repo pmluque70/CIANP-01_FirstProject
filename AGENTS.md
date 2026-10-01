@@ -8,7 +8,8 @@ Web estática para registrar sesiones de estudio y motivarse viendo la racha de 
 - Textos de la interfaz en español.
 - Código simple, nombres descriptivos y comentarios solo donde aporten.
 - Diseño limpio y responsive; cualquier pantalla nueva debe verse bien en el móvil.
-- Paleta de color: azul (#3b82f6 como color principal).
+- Paleta de color: naranja (#ff6b35 como color principal), con tarjeta de racha oscura como punto focal.
+- Animaciones CSS solo: respeta `prefers-reduced-motion` y usa `:active` (no solo `:hover`) para que funcione en móvil.
 ## Datos
 - localStorage, clave `diarioEstudio_sesiones`: array de `{ fecha: "AAAA-MM-DD", tema, minutos }`.
 - Si cambias la forma de los datos, mantén compatibilidad con lo ya guardado o el usuario perderá sus sesiones.
