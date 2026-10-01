@@ -56,6 +56,12 @@ h2 {
     opacity: 0.9;
 }
 
+.minutos-semana {
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
 /* Formulario */
 .formulario {
     background: white;

@@ -12,6 +12,7 @@ const inputTema = document.getElementById('tema');
 const inputMinutos = document.getElementById('minutos');
 const rachaNumero = document.getElementById('rachaNumero');
 const mejorRachaNumero = document.getElementById('mejorRachaNumero');
+const minutosSemana = document.getElementById('minutosSemana');
 const listaSesiones = document.getElementById('listaSesiones');
 const listaVacia = document.getElementById('listaVacia');
 
@@ -113,6 +114,28 @@ function calcularMejorRacha(sesiones) {
     return Math.max(mejor, rachaActual);
 }
 
+// --------------------------------------------
+// Calcular total de minutos estudiados esta semana
+// --------------------------------------------
+
+function calcularMinutosSemana(sesiones) {
+    // Dia de la semana: 0 = domingo, 1 = lunes, ..., 6 = sabado
+    const diaSemana = new Date().getDay();
+
+    // Dias desde el lunes (lunes = 0, martes = 1, ..., domingo = 6)
+    const diasDesdeLunes = diaSemana === 0 ? 6 : diaSemana - 1;
+
+    // Fecha del lunes de esta semana
+    const hoy = new Date();
+    const lunes = sumarDias(hoy, -diasDesdeLunes);
+    const lunesStr = fechaComoString(lunes);
+
+    // Sumar minutos de sesiones desde el lunes
+    return sesiones
+        .filter(s => s.fecha >= lunesStr)
+        .reduce((total, s) => total + s.minutos, 0);
+}
+
 // Convierte un Date a string YYYY-MM-DD (local)
 function fechaComoString(fecha) {
     const anio = fecha.getFullYear();
@@ -141,9 +164,10 @@ function renderizar() {
     // Ordenar de más reciente a más antigua
     sesiones.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
-    // Actualizar rachas
+    // Actualizar rachas y minutos semanales
     rachaNumero.textContent = calcularRacha(sesiones);
     mejorRachaNumero.textContent = calcularMejorRacha(sesiones);
+    minutosSemana.textContent = calcularMinutosSemana(sesiones);
 
     // Actualizar lista
     listaSesiones.innerHTML = '';
