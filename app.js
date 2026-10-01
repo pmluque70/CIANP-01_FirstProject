@@ -13,6 +13,7 @@ const inputMinutos = document.getElementById('minutos');
 const rachaNumero = document.getElementById('rachaNumero');
 const mejorRachaNumero = document.getElementById('mejorRachaNumero');
 const minutosSemana = document.getElementById('minutosSemana');
+const diasMesNumero = document.getElementById('diasMesNumero');
 const listaSesiones = document.getElementById('listaSesiones');
 const listaVacia = document.getElementById('listaVacia');
 
@@ -136,6 +137,24 @@ function calcularMinutosSemana(sesiones) {
         .reduce((total, s) => total + s.minutos, 0);
 }
 
+// --------------------------------------------
+// Calcular dias estudiados este mes
+// --------------------------------------------
+
+function calcularDiasMes(sesiones) {
+    const ahora = new Date();
+    const mesActual = `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}`;
+
+    // Filtrar sesiones del mes actual y contar dias unicos
+    const diasUnicos = new Set(
+        sesiones
+            .filter(s => s.fecha.startsWith(mesActual))
+            .map(s => s.fecha)
+    );
+
+    return diasUnicos.size;
+}
+
 // Convierte un Date a string YYYY-MM-DD (local)
 function fechaComoString(fecha) {
     const anio = fecha.getFullYear();
@@ -164,10 +183,11 @@ function renderizar() {
     // Ordenar de más reciente a más antigua
     sesiones.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
-    // Actualizar rachas y minutos semanales
+    // Actualizar rachas y estadisticas
     rachaNumero.textContent = calcularRacha(sesiones);
     mejorRachaNumero.textContent = calcularMejorRacha(sesiones);
     minutosSemana.textContent = calcularMinutosSemana(sesiones);
+    diasMesNumero.textContent = calcularDiasMes(sesiones);
 
     // Actualizar lista
     listaSesiones.innerHTML = '';

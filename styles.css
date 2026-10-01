@@ -62,6 +62,12 @@ h2 {
     opacity: 0.9;
 }
 
+.dias-mes {
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
 /* Formulario */
 .formulario {
     background: white;

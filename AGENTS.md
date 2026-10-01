@@ -16,6 +16,7 @@ Web estática para registrar sesiones de estudio y motivarse viendo la racha de 
 - Racha actual = días consecutivos con al menos 1 sesión que terminan hoy. Si hoy no hay sesión pero ayer sí, la racha sigue viva y se cuenta desde ayer.
 - Mejor racha = la secuencia más larga de días consecutivos con sesión en toda la historia. Se calcula recorriendo las fechas únicas ordenadas.
 - Semana = de lunes a domingo. Minutos semanales = suma de minutos de sesiones desde el lunes de la semana actual.
+- Dias del mes = numero de dias unicos con al menos 1 sesion en el mes actual.
 - Varias sesiones el mismo día cuentan como un solo día. Las fechas futuras no suman.
 ## Forma de trabajar
 - Haz solo lo que se pide: no añadas funcionalidades por tu cuenta.

@@ -1,7 +1,7 @@
 # MEMORY.md — Diario de Estudio
 Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo que ya no aporte.
 ## Estado actual
-- v1.2 funcionando: registrar sesiones (fecha, tema, minutos), racha actual, mejor racha histórica, minutos semanales y lista de sesiones.
+- v1.3 funcionando: registrar sesiones (fecha, tema, minutos), racha actual, mejor racha histórica, minutos semanales, dias del mes y lista de sesiones.
 - Datos en localStorage.
 ## Decisiones (y por qué)
 - Sin backend ni dependencias: cualquiera debe poder abrirlo con doble clic.
@@ -10,6 +10,7 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - Mejor racha como badge discreto debajo de la racha actual.
 - Semana empieza en lunes: convención más común en España.
 - Minutos semanales en la sección de racha: visible sin hacer scroll.
+- Dias del mes en la sección de racha: mismo motivo.
 ## Aprendizajes y errores a evitar
 - AGENTS.md tenía la clave de localStorage y los nombres de campo en inglés, pero el código real usa español. Corregido en v1.1.
 ## Próximos pasos
