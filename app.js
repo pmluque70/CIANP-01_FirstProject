@@ -178,6 +178,19 @@ function formatearFecha(str) {
 // Renderizar la interfaz
 // --------------------------------------------
 
+// Muestra un valor y, si ha cambiado, reinicia la animacion del numero.
+// Asi el rebote se ve justo al guardar una sesion, no solo al cargar.
+function mostrarValor(elemento, valor) {
+    const texto = String(valor);
+    if (elemento.textContent === texto) return;
+
+    elemento.textContent = texto;
+    elemento.classList.remove('pulso');
+    // Forzar reflow: sin esto el navegador no reinicia la animacion
+    void elemento.offsetWidth;
+    elemento.classList.add('pulso');
+}
+
 function renderizar() {
     const sesiones = cargarSesiones();
 
@@ -185,10 +198,10 @@ function renderizar() {
     sesiones.sort((a, b) => b.fecha.localeCompare(a.fecha));
 
     // Actualizar rachas y estadisticas
-    rachaNumero.textContent = calcularRacha(sesiones);
-    mejorRachaNumero.textContent = calcularMejorRacha(sesiones);
-    minutosSemana.textContent = calcularMinutosSemana(sesiones);
-    diasMesNumero.textContent = calcularDiasMes(sesiones);
+    mostrarValor(rachaNumero, calcularRacha(sesiones));
+    mostrarValor(mejorRachaNumero, calcularMejorRacha(sesiones));
+    mostrarValor(minutosSemana, calcularMinutosSemana(sesiones));
+    mostrarValor(diasMesNumero, calcularDiasMes(sesiones));
 
     // Actualizar lista
     listaSesiones.innerHTML = '';

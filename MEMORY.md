@@ -1,7 +1,7 @@
 # MEMORY.md — Diario de Estudio
 Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo que ya no aporte.
 ## Estado actual
-- v1.5.0: registrar sesiones (fecha, tema, minutos), racha actual, mejor racha, minutos semanales, días del mes, lista de sesiones, versión en footer y favicon.
+- v1.6.0: registrar sesiones (fecha, tema, minutos), racha actual, mejor racha, minutos semanales, días del mes, lista de sesiones, versión en footer y favicon.
 - Interfaz rediseñada con la skill `frontend-design`: tarjeta de racha oscura, estadísticas en rejilla, llama SVG, grano sutil y animaciones escalonadas.
 - Datos en localStorage, clave `diarioEstudio_sesiones`.
 ## Decisiones (y por qué)
@@ -14,9 +14,11 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - Tipografía del sistema, sin Google Fonts: la web tiene que funcionar sin conexión.
 - Paleta naranja (#ff6b35) con tarjeta de racha oscura: la racha es el punto focal de la página.
 - Favicon y llama en SVG (sin emoji): escalable y sin depender de la fuente de emoji del sistema.
-- Animaciones solo con CSS (sin librerías ni JS): el proyecto debe seguir abriendo con doble clic.
+- Animaciones declaradas en CSS; el JS solo dispara la del número cuando cambia. Nada de librerías: el proyecto debe seguir abriendo con doble clic.
 - Los hovers van dentro de `@media (hover: hover)` y se acompañan de `:active`: en móvil los hovers no existen.
 - `prefers-reduced-motion` respetado: si el usuario tiene los efectos de Windows desactivados, las animaciones no se ejecutan.
+- Las animaciones de carga duran ~1,8s en total: hay que verlas en los primeros segundos. La llama late en bucle cada 2,2s, así que siempre se ve movimiento.
+- El número de la racha rebota (`mostrarValor` en app.js) cada vez que su valor cambia, no solo al cargar: es cuando el usuario está mirando.
 ## Aprendizajes y errores a evitar
 - AGENTS.md tenía la clave de localStorage y los nombres de campo en inglés, pero el código real usa español. Corregido en v1.1.
 - `innerHTML = ''` en `renderizar()` recrea los `<li>`: para animarlos hay que animar el elemento, no esperar una transición del contenedor.

@@ -67,17 +67,18 @@ body::before {
 }
 
 /* -------------------------------------------
-   Entrada escalonada: una solaSequence
+   Entrada escalonada: una secuencia
    orquestada al cargar, no sueltas.
+   Duración generosa para que seapprecie.
    ------------------------------------------- */
 @keyframes entrar {
     from {
         opacity: 0;
-        transform: translateY(14px);
+        transform: translateY(28px) scale(0.96);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -87,13 +88,13 @@ h1 {
     font-size: clamp(1.5rem, 5vw, 1.9rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.racha { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
-.formulario { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both; }
-.sesiones { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 360ms both; }
-footer { animation: entrar 600ms cubic-bezier(0.16, 1, 0.3, 1) 480ms both; }
+.racha { animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both; }
+.formulario { animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) 450ms both; }
+.sesiones { animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) 700ms both; }
+footer { animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) 950ms both; }
 
 h2 {
     font-size: 0.75rem;
@@ -144,17 +145,34 @@ h2 {
 }
 
 .llama {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     margin-bottom: 0.25rem;
     filter: drop-shadow(0 0 14px rgba(255, 107, 53, 0.65));
-    animation: latido 3.2s ease-in-out 900ms infinite;
+    animation: latido 2.2s ease-in-out 400ms infinite;
 }
 
-/* Latido suave: llama que respira */
+/* Latido: la llama "respira" con movimiento claro */
 @keyframes latido {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.09); }
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+    }
+    50% {
+        transform: scale(1.22) rotate(-4deg);
+        filter: drop-shadow(0 0 26px rgba(255, 107, 53, 0.95));
+    }
+}
+
+/* Rebote del número cuando cambia de valor */
+@keyframes pulso {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+
+.racha-numero.pulso {
+    animation: pulso 550ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .racha-numero {
