@@ -16,6 +16,7 @@ Web estática para registrar sesiones de estudio y motivarse viendo la racha de 
 ## Fechas y racha (fácil equivocarse)
 - Trabaja siempre con la fecha local del usuario. Nunca uses `toISOString()` ni `new Date("AAAA-MM-DD")`: se interpretan en UTC y desplazan el día.
 - Racha actual = días consecutivos con al menos 1 sesión que terminan hoy. Si hoy no hay sesión pero ayer sí, la racha sigue viva y se cuenta desde ayer.
+- Ejemplo: con sesiones el 28, 29 y 30 de septiembre y hoy siendo el 2 de octubre, la racha actual es 0 (no hubo sesión ni ayer) pero la mejor racha es 3. Para que la racha actual no se rompa, tiene que haber sesión hoy o ayer.
 - Mejor racha = la secuencia más larga de días consecutivos con sesión en toda la historia. Se calcula recorriendo las fechas únicas ordenadas.
 - Minutos semanales = suma de minutos de las sesiones desde el lunes hasta hoy (las futuras no suman).
 - Días del mes = número de días únicos con al menos 1 sesión en el mes actual, sin contar fechas futuras.

@@ -25,5 +25,6 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - AGENTS.md tenía la clave de localStorage y los nombres de campo en inglés, pero el código real usa español. Corregido en v1.1.
 - `innerHTML = ''` en `renderizar()` recrea los `<li>`: para animarlos hay que animar el elemento, no esperar una transición del contenedor.
 - Antes de dar por hecha una animación: comprobar si el sistema tiene los efectos desactivados, y recordar que en táctil no hay hover.
+- Una racha de días antiguos (por ejemplo 28-30 de septiembre cuando hoy es 2 de octubre) da racha actual 0 y mejor racha 3. Es el comportamiento correcto, no un bug: la racha solo sobrevive si hubo sesión hoy o ayer.
 ## Próximos pasos
 - (vacío por ahora)
