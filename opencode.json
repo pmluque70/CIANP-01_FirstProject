@@ -6,6 +6,10 @@
         "type": "local",
         "command": ["npx.cmd", "-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"],
       },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp"
+      },
     },
   },
 }
