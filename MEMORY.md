@@ -1,7 +1,7 @@
 # MEMORY.md — Diario de Estudio
 Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo que ya no aporte.
 ## Estado actual
-- v1.6.0: registrar sesiones (fecha, tema, minutos), racha actual, mejor racha, minutos semanales, días del mes, lista de sesiones, versión en footer y favicon.
+- v1.7.0: registrar, editar y borrar sesiones; racha actual, mejor racha, minutos semanales, días del mes, versión en footer y favicon.
 - Interfaz rediseñada con la skill `frontend-design`: tarjeta de racha oscura, estadísticas en rejilla, llama SVG, grano sutil y animaciones escalonadas.
 - Datos en localStorage, clave `diarioEstudio_sesiones`.
 ## Decisiones (y por qué)
@@ -19,9 +19,11 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - `prefers-reduced-motion` respetado: si el usuario tiene los efectos de Windows desactivados, las animaciones no se ejecutan.
 - Las animaciones de carga duran ~1,8s en total: hay que verlas en los primeros segundos. La llama late en bucle cada 2,2s, así que siempre se ve movimiento.
 - El número de la racha rebota (`mostrarValor` en app.js) cada vez que su valor cambia, no solo al cargar: es cuando el usuario está mirando.
+- Las sesiones se identifican por su índice en la lista ordenada, no con un id. Así no se toca el formato de lo guardado en localStorage. Si algún día hay que reordenar o paginar, habrá que añadir un id (preguntando antes).
+- Borrar pide confirmación con `confirm()` nativo: incluye fecha, tema y minutos para no borrar por error.
 ## Aprendizajes y errores a evitar
 - AGENTS.md tenía la clave de localStorage y los nombres de campo en inglés, pero el código real usa español. Corregido en v1.1.
 - `innerHTML = ''` en `renderizar()` recrea los `<li>`: para animarlos hay que animar el elemento, no esperar una transición del contenedor.
 - Antes de dar por hecha una animación: comprobar si el sistema tiene los efectos desactivados, y recordar que en táctil no hay hover.
 ## Próximos pasos
-- Editar y borrar sesiones: ahora no se puede corregir un error sin borrar la clave entera desde las DevTools.
+- (vacío por ahora)

@@ -16,6 +16,14 @@ const minutosSemana = document.getElementById('minutosSemana');
 const diasMesNumero = document.getElementById('diasMesNumero');
 const listaSesiones = document.getElementById('listaSesiones');
 const listaVacia = document.getElementById('listaVacia');
+const tituloFormulario = document.getElementById('tituloFormulario');
+const botonGuardar = document.getElementById('botonGuardar');
+const botonCancelar = document.getElementById('botonCancelar');
+
+// Indice de la sesión que se está editando. -1 = se está creando una nueva.
+// Las sesiones se identifican por su posición en la lista ordenada,
+// así que no hace falta añadir un id a los datos guardados.
+let indiceEditando = -1;
 
 // --------------------------------------------
 // Funciones de fecha (siempre fecha local)
@@ -54,6 +62,14 @@ function cargarSesiones() {
 
 function guardarSesiones(sesiones) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sesiones));
+}
+
+// Las sesiones siempre se manejan ordenadas de más reciente a más antigua,
+// para que el indice de la lista sea el mismo al editar, borrar o dibujar.
+function cargarSesionesOrdenadas() {
+    const sesiones = cargarSesiones();
+    sesiones.sort((a, b) => b.fecha.localeCompare(a.fecha));
+    return sesiones;
 }
 
 // --------------------------------------------
@@ -192,10 +208,7 @@ function mostrarValor(elemento, valor) {
 }
 
 function renderizar() {
-    const sesiones = cargarSesiones();
-
-    // Ordenar de más reciente a más antigua
-    sesiones.sort((a, b) => b.fecha.localeCompare(a.fecha));
+    const sesiones = cargarSesionesOrdenadas();
 
     // Actualizar rachas y estadisticas
     mostrarValor(rachaNumero, calcularRacha(sesiones));
@@ -207,7 +220,7 @@ function renderizar() {
     listaSesiones.innerHTML = '';
     listaVacia.style.display = sesiones.length === 0 ? 'block' : 'none';
 
-    sesiones.forEach(sesion => {
+    sesiones.forEach((sesion, indice) => {
         const item = document.createElement('li');
 
         const info = document.createElement('div');
@@ -222,15 +235,104 @@ function renderizar() {
         info.appendChild(fechaSpan);
         info.appendChild(detalleDiv);
 
+        const pie = document.createElement('div');
+        pie.className = 'sesion-pie';
+
         const minutosSpan = document.createElement('span');
         minutosSpan.className = 'sesion-minutos';
         minutosSpan.textContent = `${sesion.minutos} min`;
+        pie.appendChild(minutosSpan);
 
+        // Botones de editar y borrar
+        const acciones = document.createElement('div');
+        acciones.className = 'sesion-acciones';
+
+        const botonEditar = document.createElement('button');
+        botonEditar.type = 'button';
+        botonEditar.className = 'accion';
+        botonEditar.textContent = 'Editar';
+        botonEditar.dataset.indice = indice;
+        botonEditar.setAttribute('aria-label', `Editar sesión del ${formatearFecha(sesion.fecha)}`);
+        acciones.appendChild(botonEditar);
+
+        const botonEliminar = document.createElement('button');
+        botonEliminar.type = 'button';
+        botonEliminar.className = 'accion eliminar';
+        botonEliminar.textContent = 'Eliminar';
+        botonEliminar.dataset.indice = indice;
+        botonEliminar.setAttribute('aria-label', `Eliminar sesión del ${formatearFecha(sesion.fecha)}`);
+        acciones.appendChild(botonEliminar);
+
+        pie.appendChild(acciones);
         item.appendChild(info);
-        item.appendChild(minutosSpan);
+        item.appendChild(pie);
         listaSesiones.appendChild(item);
     });
 }
+
+// --------------------------------------------
+// Editar y borrar sesiones
+// --------------------------------------------
+
+// Pone el formulario en modo edición con los datos de la sesión elegida
+function iniciarEdicion(indice) {
+    const sesiones = cargarSesionesOrdenadas();
+    const sesion = sesiones[indice];
+    if (!sesion) return;
+
+    indiceEditando = indice;
+    inputFecha.value = sesion.fecha;
+    inputTema.value = sesion.tema;
+    inputMinutos.value = sesion.minutos;
+
+    tituloFormulario.textContent = 'Editando sesión';
+    botonGuardar.textContent = 'Guardar cambios';
+    botonCancelar.hidden = false;
+    inputTema.focus();
+}
+
+// Vuelve al modo normal: crear una sesión nueva
+function cancelarEdicion() {
+    indiceEditando = -1;
+
+    tituloFormulario.textContent = 'Registrar sesión';
+    botonGuardar.textContent = 'Guardar sesión';
+    botonCancelar.hidden = true;
+
+    inputFecha.value = hoyComoString();
+    inputTema.value = '';
+    inputMinutos.value = '';
+    inputTema.focus();
+}
+
+// Un solo listener para todos los botones de la lista
+listaSesiones.addEventListener('click', function (e) {
+    const boton = e.target.closest('button.accion');
+    if (!boton) return;
+
+    const indice = Number(boton.dataset.indice);
+
+    if (boton.classList.contains('eliminar')) {
+        const sesiones = cargarSesionesOrdenadas();
+        const sesion = sesiones[indice];
+        if (!sesion) return;
+
+        const confirmado = confirm(
+            `¿Eliminar la sesión del ${formatearFecha(sesion.fecha)}?\n\n"${sesion.tema}" (${sesion.minutos} min)`
+        );
+        if (!confirmado) return;
+
+        sesiones.splice(indice, 1);
+        guardarSesiones(sesiones);
+
+        // Si estaba editando justo la que se borra, salir del modo edición
+        if (indiceEditando === indice) cancelarEdicion();
+    } else {
+        iniciarEdicion(indice);
+    }
+
+    renderizar();
+});
 
 // --------------------------------------------
 // Eventos
@@ -239,20 +341,37 @@ function renderizar() {
 // Poner fecha de hoy por defecto
 inputFecha.value = hoyComoString();
 
+botonCancelar.addEventListener('click', cancelarEdicion);
+
 formulario.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const nuevaSesion = {
+    const datos = {
         fecha: inputFecha.value,
         tema: inputTema.value.trim(),
         minutos: parseInt(inputMinutos.value, 10)
     };
 
-    const sesiones = cargarSesiones();
-    sesiones.push(nuevaSesion);
+    const sesiones = cargarSesionesOrdenadas();
+
+    if (indiceEditando >= 0) {
+        // Reemplazar la sesión que se está editando
+        sesiones[indiceEditando] = datos;
+    } else {
+        sesiones.push(datos);
+    }
+
     guardarSesiones(sesiones);
 
-    // Limpiar solo tema y minutos (mantener la fecha para facilitar múltiples registros)
+    if (indiceEditando >= 0) {
+        indiceEditando = -1;
+        tituloFormulario.textContent = 'Registrar sesión';
+        botonGuardar.textContent = 'Guardar sesión';
+        botonCancelar.hidden = true;
+        inputFecha.value = hoyComoString();
+    }
+
+    // Limpiar tema y minutos (la fecha se mantiene para registrar varias sesiones)
     inputTema.value = '';
     inputMinutos.value = '';
     inputTema.focus();

@@ -349,9 +349,8 @@ ul {
 
 li {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.5rem;
     padding: 0.7rem 0.6rem;
     border-radius: var(--radio-chico);
     border-bottom: 1px solid var(--borde);
@@ -406,6 +405,83 @@ li:last-child {
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+}
+
+/* Pie de la sesion: minutos a la izquierda, acciones a la derecha */
+.sesion-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sesion-acciones {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.accion {
+    padding: 0.3rem 0.7rem;
+    background: transparent;
+    color: var(--texto-suave);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background var(--transicion), color var(--transicion),
+                border-color var(--transicion), transform var(--transicion);
+}
+
+.accion:active {
+    transform: scale(0.96);
+}
+
+.accion.eliminar {
+    color: #c2410c;
+    border-color: rgba(194, 65, 12, 0.25);
+}
+
+@media (hover: hover) {
+    .accion:hover {
+        background: var(--fondo);
+        color: var(--texto);
+        border-color: #d9ccc4;
+        box-shadow: none;
+        transform: translateY(-1px);
+    }
+
+    .accion.eliminar:hover {
+        background: rgba(194, 65, 12, 0.08);
+        color: #9a3412;
+        border-color: rgba(194, 65, 12, 0.4);
+    }
+}
+
+.boton-secundario {
+    width: 100%;
+    margin-top: 0.6rem;
+    padding: 0.7rem;
+    background: transparent;
+    color: var(--texto-suave);
+    border: 1px solid var(--borde);
+    box-shadow: none;
+    font-size: 0.9rem;
+}
+
+.boton-secundario:active {
+    transform: scale(0.99);
+    box-shadow: none;
+}
+
+@media (hover: hover) {
+    .boton-secundario:hover {
+        background: var(--fondo);
+        color: var(--texto);
+        box-shadow: none;
+    }
 }
 
 .lista-vacia {
