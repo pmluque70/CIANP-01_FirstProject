@@ -213,7 +213,6 @@ function renderizar() {
     // Actualizar rachas y estadisticas
     mostrarValor(rachaNumero, calcularRacha(sesiones));
     mostrarValor(mejorRachaNumero, calcularMejorRacha(sesiones));
-    mostrarValor(minutosSemana, calcularMinutosSemana(sesiones));
     mostrarValor(diasMesNumero, calcularDiasMes(sesiones));
 
     // Actualizar lista
@@ -268,6 +267,10 @@ function renderizar() {
         item.appendChild(pie);
         listaSesiones.appendChild(item);
     });
+
+    // Avisar al mapa de calor para que se refresque (spec 001, RF-10.2)
+    if (window.heatMap) window.heatMap.render();
+    if (window.weeklyGoal) window.weeklyGoal.render();
 }
 
 // --------------------------------------------

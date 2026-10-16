@@ -28,6 +28,14 @@
     --radio: 16px;
     --radio-chico: 10px;
     --transicion: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Mapa de calor */
+    --celda: 13px;
+    --celda-vacia: #ebe4de;
+    --celda-n1: #ffd4b8;
+    --celda-n2: #ffab7a;
+    --celda-n3: #ff6b35;
+    --celda-n4: #b83c11;
 }
 
 * {
@@ -196,10 +204,10 @@ h2 {
     margin-top: 0.4rem;
 }
 
-/* Estadísticas: rejilla de 3 columnas con separadores */
+/* Estadísticas: rejilla de 2 columnas con separadores */
 .racha-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     margin-top: 1.5rem;
     padding-top: 1.25rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -229,6 +237,192 @@ h2 {
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--naranja-claro);
+}
+
+/* -------------------------------------------
+   Objetivo semanal
+   Fila propia a todo el ancho de la tarjeta,
+   debajo de las dos estadísticas que quedan.
+   El texto lo pone weekly-goal-ui.js: aquí
+   solo hay forma, color y medida.
+   ------------------------------------------- */
+.objetivo {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.objetivo-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem 0.75rem;
+    width: 100%;
+}
+
+.objetivo-etiqueta {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* La línea de minutos registrados. Es una columna para que el texto que
+   escriba la interfaz pueda quedar en una o en dos frases sin que este CSS
+   tenga que saber cuántas son. */
+.objetivo-linea {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--naranja-claro);
+}
+
+/* Barra de progreso. El ancho del relleno lo pone la interfaz; aquí solo
+   queda la forma. */
+.objetivo-barra {
+    width: 100%;
+    max-width: 320px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.objetivo-barra-valor {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--naranja), var(--ambar));
+    border-radius: inherit;
+    transition: width var(--transicion);
+}
+
+/* Meta cumplida: además del texto, la barra pasa a relleno sólido y la
+   etiqueta cambia de aspecto. Nunca se distingue solo por color. */
+.objetivo[data-state="met"] .objetivo-barra-valor {
+    background: var(--naranja-claro);
+}
+
+.objetivo[data-state="met"] .objetivo-etiqueta {
+    color: var(--naranja-claro);
+    letter-spacing: 0.14em;
+}
+
+/* Formulario de edición */
+.objetivo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 0.25rem;
+}
+
+.objetivo-form label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.objetivo-form input {
+    margin-bottom: 0;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    text-align: center;
+}
+
+/* El input:focus de la hoja base pone fondo blanco y empata en
+   especificidad con la regla de arriba, de modo que al recibir el foco el
+   campo se quedaba con texto blanco sobre fondo blanco. */
+.objetivo-form input:focus {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.objetivo-acciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.objetivo-acciones button,
+.objetivo-editar {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.85rem;
+}
+
+.objetivo-editar {
+    width: auto;
+    background: transparent;
+    color: var(--naranja-claro);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+}
+
+.objetivo-cancelar {
+    background: transparent;
+    color: var(--naranja-claro);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+}
+
+.objetivo-editar:active,
+.objetivo-cancelar:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+@media (hover: hover) {
+    .objetivo-editar:hover,
+    .objetivo-cancelar:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+/* Mensaje y aviso: el primero responde a lo que acaba de escribir la
+   persona, el segundo a lo que ya estaba guardado. Formas distintas. */
+.objetivo-mensaje,
+.objetivo-aviso {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    border-radius: var(--radio-chico);
+}
+
+.objetivo-mensaje {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.objetivo-aviso {
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fcd9a0;
+}
+
+/* El atributo hidden no gana si esta hoja le da un display propio, así que
+   se repite aquí a propósito: fuera de la edición no se ve el formulario ni
+   los dos párrafos (RF-8.3). */
+.objetivo-form[hidden],
+.objetivo-mensaje[hidden],
+.objetivo-aviso[hidden] {
+    display: none;
 }
 
 /* -------------------------------------------
@@ -489,6 +683,210 @@ li:last-child {
     color: var(--texto-suave);
     font-style: italic;
     padding: 0.5rem 0;
+}
+
+/* -------------------------------------------
+   Mapa de calor
+   ------------------------------------------- */
+.mapa {
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--sombra);
+    animation: entrar 900ms cubic-bezier(0.16, 1, 0.3, 1) 330ms both;
+}
+
+/* Filtro */
+.mapa-filtro {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0.4rem 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.mapa-filtro label {
+    margin: 0;
+}
+
+.mapa-filtro input {
+    margin: 0;
+    padding: 0.45rem 0.5rem;
+}
+
+.mapa-filtro .boton-secundario {
+    grid-column: 1 / -1;
+    margin-top: 0.2rem;
+    padding: 0.45rem;
+    font-size: 0.8rem;
+}
+
+/* Zona desplazable */
+.mapa-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* Keeps the vertical page scroll working on touch screens (RF-8.5). */
+    touch-action: pan-x pan-y;
+    padding-bottom: 0.25rem;
+}
+
+/* Etiquetas de mes */
+.mapa-meses {
+    position: relative;
+    height: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.mapa-mes {
+    position: absolute;
+    top: 0;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Rejilla: 7 filas, columnas de arriba abajo */
+.mapa-rejilla {
+    display: grid;
+    grid-template-rows: repeat(7, var(--celda));
+    grid-auto-flow: column;
+    grid-auto-columns: var(--celda);
+    gap: 3px;
+    width: max-content;
+}
+
+.mapa-celda {
+    width: var(--celda);
+    height: var(--celda);
+    border-radius: 2px;
+    background: var(--celda-vacia);
+    cursor: pointer;
+    transition: transform var(--transicion), outline-color var(--transicion);
+}
+
+.mapa-celda[data-level="1"] { background: var(--celda-n1); }
+.mapa-celda[data-level="2"] { background: var(--celda-n2); }
+.mapa-celda[data-level="3"] { background: var(--celda-n3); }
+.mapa-celda[data-level="4"] { background: var(--celda-n4); }
+
+/* El tono también cambia, no solo el matiz (RNF-2). */
+.mapa-celda[data-level="2"] { border-radius: 2px 3px 2px 3px; }
+.mapa-celda[data-level="4"] { border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18); }
+
+.mapa-celda:hover {
+    transform: scale(1.35);
+}
+
+.mapa-celda:focus-visible {
+    outline: 2px solid var(--naranja);
+    outline-offset: 1px;
+    transform: scale(1.2);
+}
+
+.mapa-celda[aria-selected="true"] {
+    outline: 2px solid var(--naranja);
+    outline-offset: 1px;
+}
+
+/* Señal de contenido por explorar (RF-8.3) */
+.mapa-scroll.con-hay-izquierda {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px);
+    mask-image: linear-gradient(90deg, transparent, #000 24px);
+}
+
+.mapa-scroll.con-hay-derecha {
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+}
+
+.mapa-scroll.con-hay-izquierda.con-hay-derecha {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+
+/* Detalle */
+.mapa-detalle {
+    position: fixed;
+    z-index: 20;
+    pointer-events: none;
+    background: var(--tinta);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(23, 20, 26, 0.3);
+    white-space: nowrap;
+}
+
+.mapa-panel {
+    margin: 0.75rem 0 0;
+    padding: 0.6rem 0.7rem;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-chico);
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    min-height: 2.2rem;
+}
+
+.mapa-panel strong {
+    color: var(--texto);
+}
+
+.mapa-aviso {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    color: #9a3412;
+    background: rgba(194, 65, 12, 0.08);
+    border: 1px solid rgba(194, 65, 12, 0.22);
+    border-radius: var(--radio-chico);
+    padding: 0.5rem 0.6rem;
+}
+
+/* Leyenda */
+.mapa-leyenda {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+    margin: 0.9rem 0 0;
+    font-size: 0.7rem;
+    color: var(--texto-suave);
+}
+
+.mapa-leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    border: none;
+}
+
+.mapa-muestra {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.mapa-muestra.nivel-0 { background: var(--celda-vacia); }
+.mapa-muestra.nivel-1 { background: var(--celda-n1); }
+.mapa-muestra.nivel-2 { background: var(--celda-n2); }
+.mapa-muestra.nivel-3 { background: var(--celda-n3); }
+.mapa-muestra.nivel-4 { background: var(--celda-n4); border-radius: 4px; }
+
+@media (max-width: 420px) {
+    .mapa-filtro {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mapa-filtro label {
+        font-size: 0.72rem;
+    }
 }
 
 /* -------------------------------------------

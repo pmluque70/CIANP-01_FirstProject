@@ -34,14 +34,69 @@
                     <span class="stat-valor"><span id="mejorRachaNumero">0</span> días</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Esta semana</span>
-                    <span class="stat-valor"><span id="minutosSemana">0</span> min</span>
-                </div>
-                <div class="stat">
                     <span class="stat-label">Este mes</span>
                     <span class="stat-valor"><span id="diasMesNumero">0</span> días</span>
                 </div>
+
+                <!-- Objetivo semanal: ocupa el hueco de la estadística "Esta semana" -->
+                <div class="objetivo" id="objetivoSemanal">
+                    <div class="objetivo-cabecera">
+                        <span class="objetivo-etiqueta" id="objetivoEtiqueta">Objetivo semanal</span>
+                        <button type="button" class="objetivo-editar" id="objetivoEditar">Cambiar objetivo</button>
+                    </div>
+
+                    <p class="objetivo-linea" id="objetivoLinea"></p>
+
+                    <div class="objetivo-barra" id="objetivoBarra"
+                         role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                         aria-valuenow="0">
+                        <span class="objetivo-barra-valor" id="objetivoBarraValor"></span>
+                    </div>
+
+                    <form class="objetivo-form" id="objetivoForm" hidden>
+                        <label for="objetivoCampo">Objetivo en minutos</label>
+                        <input id="objetivoCampo" name="objetivo" type="text" inputmode="numeric"
+                               autocomplete="off" spellcheck="false">
+                        <div class="objetivo-acciones">
+                            <button type="submit" class="objetivo-guardar">Guardar</button>
+                            <button type="button" class="objetivo-cancelar" id="objetivoCancelar">Cancelar</button>
+                        </div>
+                    </form>
+
+                    <p class="objetivo-mensaje" id="objetivoMensaje" hidden></p>
+                    <p class="objetivo-aviso" id="objetivoAviso" hidden></p>
+                </div>
             </div>
+        </section>
+
+        <!-- Mapa de calor -->
+        <section class="mapa" id="mapaCalor">
+            <h2>Mapa de calor</h2>
+
+            <div class="mapa-filtro">
+                <label for="filtroDesde">Desde</label>
+                <input type="date" id="filtroDesde">
+                <label for="filtroHasta">Hasta</label>
+                <input type="date" id="filtroHasta">
+                <button type="button" id="filtroLimpiar" class="boton-secundario">Quitar filtro</button>
+            </div>
+
+            <div class="mapa-scroll" id="mapaScroll">
+                <div class="mapa-meses" id="mapaMeses" aria-hidden="true"></div>
+                <div class="mapa-rejilla" id="mapaRejilla" role="grid" aria-label="Mapa de calor de días estudiados en los últimos doce meses"></div>
+            </div>
+
+            <p class="mapa-panel" id="mapaPanel">Toca un día para ver su detalle.</p>
+
+            <p class="mapa-aviso" id="mapaAviso" hidden></p>
+
+            <ul class="mapa-leyenda" aria-label="Leyenda de intensidad">
+                <li><span class="mapa-muestra nivel-0"></span> Sin estudio</li>
+                <li><span class="mapa-muestra nivel-1"></span> 1-29 min</li>
+                <li><span class="mapa-muestra nivel-2"></span> 30-59 min</li>
+                <li><span class="mapa-muestra nivel-3"></span> 60-119 min</li>
+                <li><span class="mapa-muestra nivel-4"></span> 120+ min</li>
+            </ul>
         </section>
 
         <!-- Formulario para nueva sesión -->
@@ -73,9 +128,14 @@
     </div>
 
     <footer>
-        <p>v1.7.0</p>
+        <p>v1.9.0</p>
     </footer>
 
+    <script src="heatmap-logic.js"></script>
+    <script src="session-list-logic.js"></script>
+    <script src="weekly-goal-logic.js"></script>
+    <script src="heatmap-ui.js"></script>
+    <script src="weekly-goal-ui.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
