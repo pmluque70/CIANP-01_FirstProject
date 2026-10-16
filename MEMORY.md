@@ -2,7 +2,7 @@
 Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo que ya aporte.
 ## Estado actual
 - **v1.9.0**: registrar, editar y borrar sesiones; racha actual, mejor racha, días del mes, mapa de calor y **objetivo semanal**.
-- **Spec 001 (mapa de calor) y spec 002 (objetivo semanal) IMPLEMENTADAS.** La 003 (`specs/003-resilient-session-list/`) está escrita pero **sin QA**: lista robusta, lectura defensiva compartida y borrado de `calcularMinutosSemana`.
+- **Spec 001 (mapa de calor) y spec 002 (objetivo semanal) IMPLEMENTADAS y validadas.** La 002 pasó la validación RF por RF: 82 RF y 22 criterios, todos con test o comprobación real en navegador. La 003 (`specs/003-resilient-session-list/`) está escrita pero **sin QA**: lista robusta, lectura defensiva compartida y borrado de `calcularMinutosSemana`.
 - Objetivo semanal: `weekly-goal-logic.js` (puro y probado), `weekly-goal-ui.js` (interfaz con arranque propio), `session-list-logic.js` (`readSessionStore`), bloque en la tarjeta de racha. 142 tests con `node --test`.
 - Datos en localStorage: `diarioEstudio_sesiones` y `diarioEstudio_objetivo_semanal` (independientes).
 ## Decisiones (y por qué)
@@ -25,6 +25,7 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: resume o elimina lo qu
 - Fechas en hora local, en texto `AAAA-MM-DD`, comparadas como texto. Sesiones sin `id`. Borrar pide `confirm()`.
 - Paleta naranja (#ff6b35) con tarjeta de racha oscura. Animaciones solo CSS, con `prefers-reduced-motion` respetado y `:hover` dentro de `@media (hover: hover)`.
 ## Aprendizajes y errores a evitar
+- **Un "no se puede comprobar" puede ser dos cosas**: una limitación real o que no se buscó lo bastante. El MCP de Chrome DevTools emula `prefersReducedMotion` con `emulate`, así que el movimiento reducido se verifica sin tocar Windows. No des por perdido un criterio sin mirar la herramienta entera.
 - **Nunca afirmar algo sobre los datos del usuario que el dato no demuestra.** Regla que ya corrigió un fallo grave del mapa de calor.
 - **Toda función de cálculo recibe "hoy" como parámetro.** Si depende de `new Date()` sin argumentos, no es testeable y la tarea está incompleta.
 - **Un atributo `hidden` no gana a un `display` de autor**: cualquier regla con `display` anula el `hidden` del HTML. Repítela si el elemento puede llevar `display`.
